@@ -8,10 +8,14 @@ AiCharacterCoser
 9.24 
 添加AOP起步依赖
 1.创建user库表
-2.创建user增删查改接口，实现分页查询
+2.创建user增删查改接口并且实现分页查询
 3.通过Aop实现User权限管理
 
 9.26
 添加LangChain4j依赖，LangChain4j-open-ai起步依赖和reactor异步数据流依赖
 1.添加Ai服务类
 2.测试Ai服务方法
+3.创建门面类统一调用AI服务方法
+4.创建App库表
+5.创建App增删查改接口并且实现分页查询
+6.在AppService中创建调用门面类的方法并且在实现接口

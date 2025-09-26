@@ -32,19 +32,10 @@ public class AppVO implements Serializable {
     private String initPrompt;
 
     /**
-     * 代码生成类型（枚举）
+     * ai应用扮演角色
      */
-    private String codeGenType;
+    private String cosType;
 
-    /**
-     * 部署标识
-     */
-    private String deployKey;
-
-    /**
-     * 部署时间
-     */
-    private LocalDateTime deployedTime;
 
     /**
      * 优先级

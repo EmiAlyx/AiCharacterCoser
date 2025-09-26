@@ -278,6 +278,7 @@ public class AppController {
      * @param deleteRequest 删除请求
      * @return 删除结果
      */
+    @Operation(summary = "删除应用（管理员）")
     @PostMapping("/admin/delete")
     @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
     public BaseResponse<Boolean> deleteAppByAdmin(@RequestBody UserDeleteRequest deleteRequest) {
@@ -298,6 +299,7 @@ public class AppController {
      * @param appAdminUpdateRequest 更新请求
      * @return 更新结果
      */
+    @Operation(summary = "更新应用（管理员）")
     @PostMapping("/admin/update")
     @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
     public BaseResponse<Boolean> updateAppByAdmin(@RequestBody AppAdminUpdateRequest appAdminUpdateRequest) {
@@ -323,6 +325,7 @@ public class AppController {
      * @param appQueryRequest 查询请求
      * @return 应用列表
      */
+    @Operation(summary = "分页查询应用（管理员）")
     @PostMapping("/admin/list/page/vo")
     @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
     public BaseResponse<Page<AppVO>> listAppVOByPageByAdmin(@RequestBody AppQueryRequest appQueryRequest) {
@@ -358,6 +361,7 @@ public class AppController {
      * @param id 应用 id
      * @return 应用详情
      */
+    @Operation(summary = "根据id获取应用信息（管理员）")
     @GetMapping("/admin/get/vo")
     @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
     public BaseResponse<AppVO> getAppVOByIdByAdmin(long id) {
