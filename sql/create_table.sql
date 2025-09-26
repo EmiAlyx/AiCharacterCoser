@@ -21,3 +21,22 @@ create table user
     UNIQUE KEY uk_userAccount (userAccount)
 )
     comment '用户表' collate = utf8mb4_unicode_ci;
+
+use ai_character;
+-- 应用表
+create table app
+(
+    id         bigint auto_increment comment 'id' primary key,
+    appName    varchar(256)                       null comment '应用名称',
+    cover      varchar(512)                       null comment '应用封面',
+    initPrompt text                               null comment '应用初始化的 prompt',
+    cosType    varchar(64)                        null comment 'ai角色扮演类型（枚举）',
+    priority   int      default 0                 not null comment '优先级',
+    userId     bigint                             not null comment '创建用户id',
+    editTime   datetime default CURRENT_TIMESTAMP not null comment '编辑时间',
+    createTime datetime default CURRENT_TIMESTAMP not null comment '创建时间',
+    updateTime datetime default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '更新时间',
+    isDelete   tinyint  default 0                 not null comment '是否删除',
+    INDEX idx_appName (appName),
+    INDEX idx_userId (userId)
+) comment '应用' collate = utf8mb4_unicode_ci;

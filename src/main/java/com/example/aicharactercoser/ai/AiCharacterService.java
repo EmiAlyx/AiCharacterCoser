@@ -22,11 +22,5 @@ public interface AiCharacterService {
     @SystemMessage( fromResource = "prompt/prompt-Socrates.txt")
     Flux<String> cosSocrates(String userMessage);
 
-    /**
-     * 生成多文件代码
-     * @param userMessage 用户提示词
-     * @return ai的输出结果
-     */
-    @SystemMessage( fromResource = "prompt/prompt-Socrates.txt")
-    Flux<String> generateMultiFileCodeStream(String userMessage);
+
 }

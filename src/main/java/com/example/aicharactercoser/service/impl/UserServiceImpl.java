@@ -180,13 +180,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
                 .like(StrUtil.isNotBlank(userAccount),User::getUserAccount, userAccount)
                 .like(StrUtil.isNotBlank(userName),User::getUserName, userName)
                 .like(StrUtil.isNotBlank(userProfile),User::getUserProfile, userProfile);
-//        return QueryWrapper.create()
-//                .eq("id", id) // where id = ${id}
-//                .eq("userRole", userRole) // and userRole = ${userRole}
-//                .like("userAccount", userAccount)
-//                .like("userName", userName)
-//                .like("userProfile", userProfile)
-//                .orderBy(sortField, "ascend".equals(sortOrder));
+
     }
 
 }
