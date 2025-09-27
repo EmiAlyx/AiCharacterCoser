@@ -95,7 +95,8 @@ public class AppController {
      */
     @Operation(summary = "创建应用")
     @PostMapping("/add")
-    public BaseResponse<Long> addApp(@RequestBody AppAddRequest appAddRequest, HttpServletRequest request) {
+    //转为String类型，防止精度丢失
+    public BaseResponse<String> addApp(@RequestBody AppAddRequest appAddRequest, HttpServletRequest request) {
         ThrowUtils.throwIf(appAddRequest == null, ErrorCode.PARAMS_ERROR);
         // 获取当前登录用户
         User loginUser = userService.getLoginUser(request);
@@ -110,7 +111,7 @@ public class AppController {
         //插入数据库app
         boolean result=appService.save(app);
         ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR);
-        return ResultUtils.success(app.getId());
+        return ResultUtils.success(app.getId().toString());
     }
 
     /**

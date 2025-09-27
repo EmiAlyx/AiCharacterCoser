@@ -156,7 +156,9 @@ public class ChatHistoryServiceImpl extends ServiceImpl<ChatHistoryMapper, ChatH
                 .like(StrUtil.isNotBlank(message),ChatHistory::getMessage, message)
                 .eq(StrUtil.isNotBlank(messageType),ChatHistory::getMessageType, messageType)
                 .eq(appId!=null,ChatHistory::getAppId, appId)
-                .eq(userId!=null,ChatHistory::getUserId, userId);
+                .eq(userId!=null,ChatHistory::getUserId, userId)
+                //对话历史排序修改
+                .orderByDesc(ChatHistory::getCreateTime);
         // 游标查询逻辑 - 只使用 createTime 作为游标
         if (lastCreateTime != null) {
             queryWrapper.lt(ChatHistory::getCreateTime, lastCreateTime);
