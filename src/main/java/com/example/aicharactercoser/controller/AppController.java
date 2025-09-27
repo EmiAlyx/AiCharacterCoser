@@ -8,7 +8,7 @@ import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.aicharactercoser.annotation.AuthCheck;
 import com.example.aicharactercoser.common.BaseResponse;
-import com.example.aicharactercoser.model.Vo.UserVO;
+
 import com.example.aicharactercoser.model.dto.user.UserDeleteRequest;
 import com.example.aicharactercoser.common.ResultUtils;
 import com.example.aicharactercoser.constant.AppConstant;
@@ -19,7 +19,7 @@ import com.example.aicharactercoser.exception.ThrowUtils;
 import com.example.aicharactercoser.model.dto.app.*;
 import com.example.aicharactercoser.model.entity.App;
 import com.example.aicharactercoser.model.entity.User;
-import com.example.aicharactercoser.model.enums.AiCosTypeEnum;
+
 import com.example.aicharactercoser.model.Vo.AppVO;
 import com.example.aicharactercoser.service.AppService;
 import com.example.aicharactercoser.service.UserService;

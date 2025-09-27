@@ -8,51 +8,40 @@ import java.util.Date;
 import lombok.Data;
 
 /**
- * 用户表
- * @TableName user
+ * 对话历史
+ * @TableName chat_history
  */
-@TableName(value ="user")
+@TableName(value ="chat_history")
 @Data
-public class User implements Serializable {
+public class ChatHistory implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
     /**
      * id
      */
-    //雪花算法
     @TableId(type = IdType.ASSIGN_ID)
     private Long id;
 
     /**
-     * 账户
+     * 消息
      */
-    private String userAccount;
+    private String message;
 
     /**
-     * 密码
+     * user/ai
      */
-    private String userPassword;
+    private String messageType;
 
     /**
-     * 用户昵称
+     * 应用id
      */
-    private String userName;
+    private Long appId;
 
     /**
-     * 用户头像
+     * 创建用户id
      */
-    private String userAvatarUrl;
-
-    /**
-     * 用户简介
-     */
-    private String userProfile;
-
-    /**
-     * 编辑时间/手动修改
-     */
-    private Date editTime;
+    private Long userId;
 
     /**
      * 创建时间
@@ -65,13 +54,8 @@ public class User implements Serializable {
     private Date updateTime;
 
     /**
-     * 是否删除 0是未删除
+     * 是否删除
      */
     @TableLogic
     private Integer isDelete;
-
-    /**
-     * 用户角色 user/admin
-     */
-    private String userRole;
 }

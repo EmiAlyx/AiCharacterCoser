@@ -15,7 +15,7 @@ import java.io.File;
 @Slf4j
 @RequiredArgsConstructor
 public class AiCharacterServiceFacade {
-    private final AiCharacterService aiCharacterService;
+    private final AiCharacterServiceFactory aiCharacterServiceFactory;
 
 
     /**
@@ -25,8 +25,10 @@ public class AiCharacterServiceFacade {
      * @param aiCosTypeEnum 生成类型
      * @return 保存的目录
      */
-    public Flux<String> generateChatStream(String userMessage, AiCosTypeEnum aiCosTypeEnum) {
+    public Flux<String> generateChatStream(String userMessage, AiCosTypeEnum aiCosTypeEnum, Long appId) {
         ThrowUtils.throwIf(aiCosTypeEnum == null, ErrorCode.SYSTEM_ERROR, "生成类型为空");
+        AiCharacterService aiCharacterService
+                =aiCharacterServiceFactory.getAiCharacterService(appId);
 
         return switch (aiCosTypeEnum) {
             case HARRY_POTTER -> {

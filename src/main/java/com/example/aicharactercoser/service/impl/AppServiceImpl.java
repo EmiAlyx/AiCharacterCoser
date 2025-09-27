@@ -19,8 +19,10 @@ import com.example.aicharactercoser.model.entity.User;
 import com.example.aicharactercoser.model.enums.AiCosTypeEnum;
 import com.example.aicharactercoser.model.Vo.AppVO;
 import com.example.aicharactercoser.model.Vo.UserVO;
+import com.example.aicharactercoser.model.enums.ChatHistoryMessageTypeEnum;
 import com.example.aicharactercoser.service.AppService;
 
+import com.example.aicharactercoser.service.ChatHistoryService;
 import com.example.aicharactercoser.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -28,8 +30,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -48,7 +52,7 @@ public class AppServiceImpl extends ServiceImpl<AppMapper, App> implements AppSe
 
     private final UserService userService;
     private final AiCharacterServiceFacade  aiCharacterServiceFacade;
-
+    private final ChatHistoryService chatHistoryService;
 
 
     @Override
@@ -103,9 +107,12 @@ public class AppServiceImpl extends ServiceImpl<AppMapper, App> implements AppSe
         String aiCos = app.getCosType();
         AiCosTypeEnum aiCosTypeEnum = AiCosTypeEnum.getEnumByValue(aiCos);
         ThrowUtils.throwIf(aiCosTypeEnum == null, ErrorCode.SYSTEM_ERROR, "不支持的应用类型");
-        //5.调用ai生成代码
-        Flux<String> stringFlux = aiCharacterServiceFacade.generateChatStream(message, aiCosTypeEnum);
-        //6.收集ai响应内容并且添加到对话记录
+        //5.添加用户信息到对话记录
+        chatHistoryService.addChatMessage(appId,message,
+                ChatHistoryMessageTypeEnum.USER.getValue(), loginUser.getId());
+        //6.调用ai生成代码
+        Flux<String> stringFlux = aiCharacterServiceFacade.generateChatStream(message, aiCosTypeEnum,appId);
+        //7.收集ai响应内容并且添加到对话记录
         StringBuilder stringBuilder = new StringBuilder();
         return stringFlux.map(chunk ->
         {
@@ -116,11 +123,12 @@ public class AppServiceImpl extends ServiceImpl<AppMapper, App> implements AppSe
             //
             String aiResult = stringBuilder.toString();
             if (StrUtil.isNotBlank(aiResult)) {
+                chatHistoryService.addChatMessage(appId, aiResult, ChatHistoryMessageTypeEnum.AI.getValue(), loginUser.getId());
                 log.info("生成结果为：{}",aiResult);
             }
         }).doOnError(error -> {
             String aiResult ="AI回复失败"+ error.toString();
-            log.error(aiResult);
+            chatHistoryService.addChatMessage(appId, aiResult, ChatHistoryMessageTypeEnum.AI.getValue(), loginUser.getId());
         });
 
     }
@@ -149,5 +157,23 @@ public class AppServiceImpl extends ServiceImpl<AppMapper, App> implements AppSe
                 .eq(priority!=null,App::getPriority, priority)
                 .eq(userId!=null,App::getUserId, userId);
     }
+    //重写删除方法
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean removeById(Serializable id){
+        if(id == null){
+            return false;
+        }
+        Long appId= Long.valueOf(id.toString());
+        if(appId <=0){
+            return false;
 
+        }
+        try {
+            chatHistoryService.deleteByAppId(appId);
+        }catch (Exception e){
+            log.error("删除应用关联对话历史失败:{}",e.getMessage());
+        }
+        return super.removeById(id);
+    }
 }
