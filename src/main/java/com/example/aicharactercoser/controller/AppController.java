@@ -337,7 +337,6 @@ public class AppController {
         String sortOrder = appQueryRequest.getSortOrder();
         OrderItem orderItem = new OrderItem();
         if(StrUtil.isNotEmpty(sortField)){
-
             orderItem.setColumn(sortField);
             orderItem.setAsc("ascend".equals(sortOrder));
             //默认排序

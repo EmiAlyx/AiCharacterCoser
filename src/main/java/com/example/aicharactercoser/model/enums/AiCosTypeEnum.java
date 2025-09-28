@@ -7,6 +7,8 @@ import lombok.Getter;
 @Getter
 public enum AiCosTypeEnum {
     HARRY_POTTER("哈利波特模式", "harry_potter"),
+    NE_ZHA("哪吒模式", "ne_zha"),
+    AO_BING("敖丙模式", "ao_bing"),
     SOCRATES("苏格拉底模式", "socrates");
 
     private final String text;

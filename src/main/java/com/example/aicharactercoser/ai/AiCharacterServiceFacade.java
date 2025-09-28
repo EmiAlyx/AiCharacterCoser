@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
-import java.io.File;
+
 
 @Service
 @Slf4j
@@ -40,6 +40,14 @@ public class AiCharacterServiceFacade {
                 Flux<String> result = aiCharacterService.cosSocrates(userMessage);
                 yield prcessChatStream(result);
             }
+            case AO_BING -> {
+                Flux<String> result = aiCharacterService.cosAoBing(userMessage);
+                yield prcessChatStream(result);
+            }
+            case NE_ZHA -> {
+                Flux<String> result = aiCharacterService.cosNeZha(userMessage);
+                yield prcessChatStream(result);
+            }
             default -> {
                 throw new BusinessException(ErrorCode.SYSTEM_ERROR,
                         "不支持的类型" + aiCosTypeEnum.getValue());
@@ -48,11 +56,8 @@ public class AiCharacterServiceFacade {
     }
     private Flux<String> prcessChatStream(Flux<String> result) {
         StringBuilder builder = new StringBuilder();
-        return result.doOnNext(chunk -> {
-            builder.append(chunk);
-        }).doOnComplete(() -> {
+        return result.doOnNext(builder::append).doOnComplete(() -> {
                 String outer= builder.toString();
-                log.info("生成成功，{}", outer);
         });
     }
 

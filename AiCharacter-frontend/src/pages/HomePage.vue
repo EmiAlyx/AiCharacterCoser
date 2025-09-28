@@ -18,7 +18,10 @@ const creating = ref(false)
 const cosType = ref('harry_potter') // 默认选择哈利波特模式
 const cosTypeOptions = [
   { label: '哈利波特模式', value: 'harry_potter' },
-  { label: '苏格拉底模式', value: 'socrates' }
+  { label: '苏格拉底模式', value: 'socrates' },
+  { label: '哪吒模式', value: 'ne_zha' },
+  { label: '敖丙模式', value: 'ao_bing' },
+
 ]
 
 // 我的应用数据
@@ -95,7 +98,7 @@ const loadMyApps = async () => {
 
     if (res.data.code === 0 && res.data.data) {
       myApps.value = res.data.data.records || []
-      myAppsPage.total = res.data.data.totalRow || 0
+      myAppsPage.total = Number(res.data.data.total) || 0
     }
   } catch (error) {
     console.error('加载我的应用失败：', error)
@@ -114,7 +117,7 @@ const loadFeaturedApps = async () => {
 
     if (res.data.code === 0 && res.data.data) {
       featuredApps.value = res.data.data.records || []
-      featuredAppsPage.total = res.data.data.totalRow || 0
+      featuredAppsPage.total = Number(res.data.data.total) || 0
     }
   } catch (error) {
     console.error('加载精选应用失败：', error)
@@ -183,6 +186,8 @@ onMounted(() => {
           <div class="cos-type-description">
             <span v-if="cosType === 'harry_potter'">哈利波特模式：带有魔法世界风格的创意回应</span>
             <span v-if="cosType === 'socrates'">苏格拉底模式：通过提问引导思考的哲学式回应</span>
+            <span v-if="cosType === 'ne_zha'">哪吒模式：魔童视角的叛逆又热血的直白回应</span>
+            <span v-if="cosType === 'ao_bing'">敖丙模式：龙族少主温润又纠结的内敛回应</span>
           </div>
         </div>
         
